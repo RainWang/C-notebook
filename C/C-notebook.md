@@ -103,7 +103,7 @@ int arr[10]
 # 5. 字符串
 1. 一组连续的字符，必须以'\0'结尾，占位符为%s。
 2. 不可以用操作符处理字符串，只能用函数。
-    - strlen 获得字符串长度
+    - strlen 获得字符串长度，长度不包含'\0'
     - strcat/strncat 连接字符串
     - strcpy/strncpy 复制字符串
     - strcmp/strncmp 比较字符串
