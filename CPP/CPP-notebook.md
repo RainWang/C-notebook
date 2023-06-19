@@ -37,6 +37,12 @@
         - [6.8.3 单例模式](#683-单例模式)
     - [6.9 运算符重载](#69-运算符重载)
 - [7. 继承](#7-继承)
+    - [7.1 继承特性](#71-继承特性)
+    - [7.2 子类相关函数](#72-子类相关函数)
+    - [7.3 多重继承和虚析构](#73-多重继承和虚析构)
+    - [7.4 多态](#74-多态)
+    - [7.5 虚析构](#75-虚析构)
+    - [7.6 纯虚函数和抽象类](#76-纯虚函数和抽象类)
 - [8. 异常](#8-异常)
 - [9. I/O流](#9-io流)
 
@@ -297,14 +303,14 @@ int main(){<br>
 ### 6.8.3 单例模式
 这个类只能实例化一个对象。
 >class Single{<br>
-private:<br>
-    &emsp;//加上static表示这只是静态变量的声明，所以编译器不会报错<br>
-    &emsp;static Single s_sig;<br>
-private://不允许用户通过类创建类对象<br>
+private://1. 私有化构造函数，不允许用户通过类创建类对象<br>
     &emsp;Single(){};<br>
     &emsp;Single(const Single& s){};<br>
     &emsp;Single& operatpr=(const Single& s){};<br>
-public:<br>
+private:<br>
+    &emsp;//2. 加上static表示这只是静态变量的声明，所以编译器不会报错<br>
+    &emsp;static Single s_sig;<br>
+public://3. 声明静态函数，可以不需要创建对象就可以访问单例对象<br>
     &emsp;static Single getSingle(void){<br>
         &emsp;&emsp;return s_sig;<br>
     &emsp;}<br>
@@ -318,6 +324,20 @@ int main(){<br>
 ## 6.9 运算符重载
 
 # 7. 继承
+## 7.1 继承特性
+1. 继承方式有public，protected，private，**一般开发都采用public继承方式**：
+>class Student:public Person{}<br>
+2. **如果在子类定义一个与基类同名的函数，子类中的函数会隐藏基类的函数。**
+
+## 7.2 子类相关函数
+
+## 7.3 多重继承和虚析构
+
+## 7.4 多态
+
+## 7.5 虚析构
+
+## 7.6 纯虚函数和抽象类
 
 # 8. 异常
 
