@@ -287,13 +287,27 @@ int main(){<br>
 7. **sizeof计算类的大小时，不包括静态成员变量的大小。**
 
 ### 6.8.2 static成员函数
-1. 静态成员函数没有this指针，因为static中的变量任何对象都可以共享，所以没有固定地址。
-2. 静态成员函数只能访问静态成员（因为没有this指针，不能访问普通的成员变量和函数）。
+1. **静态成员函数没有this指针，**因为static中的变量任何对象都可以共享，所以没有固定地址。
+2. **静态成员函数只能访问静态成员（因为没有this指针，不能访问普通的成员变量和函数）。**
 3. 非静态成员函数可以访问静态成员变量。
-4. 静态成员函数没有this指针，所有没有const属性，不能用const修饰。
+4. **静态成员函数没有this指针，所有没有const属性**，不能用const修饰。
 
 ### 6.8.3 单例模式
-
+这个类只能实例化一个对象。
+>class Single{<br>
+private:<br>
+    &emsp;static Single s_sig;<br>
+public:<br>
+    &emsp;static Single getSingle(void){<br>
+        &emsp;&emsp;return s_sig;<br>
+    &emsp;}<br>
+};<br>
+Single::s_sig;<br>
+<br>
+int main(){<br>
+    &emsp;Single s1 = Single::getSingle();<br>
+    &emsp;Single s2 = Single::getSingle();//上下两个变量地址一样，也就是只有一个对象。<br>
+}
 
 # 7. 异常
 
