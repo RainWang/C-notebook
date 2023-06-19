@@ -35,6 +35,7 @@
         - [6.8.1 static成员变量](#681-static成员变量)
         - [6.8.2 static成员函数](#682-static成员函数)
         - [6.8.3 单例模式](#683-单例模式)
+    - [6.9 运算符重载](#69-运算符重载)
 - [7. 继承](#7-继承)
 - [8. 异常](#8-异常)
 - [9. I/O流](#9-io流)
@@ -297,17 +298,24 @@ int main(){<br>
 这个类只能实例化一个对象。
 >class Single{<br>
 private:<br>
+    &emsp;//加上static表示这只是静态变量的声明，所以编译器不会报错<br>
     &emsp;static Single s_sig;<br>
+private://不允许用户通过类创建类对象<br>
+    &emsp;Single(){};<br>
+    &emsp;Single(const Single& s){};<br>
+    &emsp;Single& operatpr=(const Single& s){};<br>
 public:<br>
     &emsp;static Single getSingle(void){<br>
         &emsp;&emsp;return s_sig;<br>
     &emsp;}<br>
 };<br>
-Single::s_sig;<br><br>
+Single::s_sig;//在类外面定义<br><br>
 int main(){<br>
     &emsp;Single s1 = Single::getSingle();<br>
     &emsp;Single s2 = Single::getSingle();//上下两个变量地址一样，也就是只有一个对象。<br>
 }
+
+## 6.9 运算符重载
 
 # 7. 继承
 
