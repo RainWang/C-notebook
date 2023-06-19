@@ -18,11 +18,18 @@
 - [5. 引用](#5-引用)
     - [5.1 概念](#51-概念)
     - [5.2 与指针的比较](#52-与指针的比较)
+    - [5.3 常引用](#53-常引用)
 - [6. 面向对象](#6-面向对象)
     - [6.1 控制访问属性](#61-控制访问属性)
-    - [6.2 构造函数](#62-构造函数)
-    - [6.3 析构函数](#63-析构函数)
+    - [6.2 类的多文件编译](#62-类的多文件编译)
+    - [6.3 构造函数](#63-构造函数)
+        - [6.3.1 构造函数的重载和缺省构造函数](#631-构造函数的重载和缺省构造函数)
+        - [6.3.2 自定义类型转换构造函数](#632-自定义类型转换构造函数)
+        - [6.3.3 拷贝构造函数](#633-拷贝构造函数)
+        - [6.3.4 初始化列表](#634-初始化列表)
     - [6.4 this指针](#64-this指针)
+    - [6.5 const成员函数和mutable关键字](#65-const成员函数和mutable关键字)
+    - [6.6 析构函数](#66-析构函数)
 - [7. 异常](#7-异常)
 - [8. I/O流](#8-io流)
 
@@ -103,6 +110,14 @@ C++支持隐式类型转换，即由小转大。
 new数组：
 >int* parr = new int[3]{1,2,3};
 
+new对象：
+>对象名* pclass = new 对象名(参数);<br>
+>Student* p = new Student("张三");
+
+new对象数组：
+>对象名* pclass = new 对象名[3];<br>
+>Student* parr = new Student[2]{Student("张三"),Student("李四")};
+
 ## 4.2 delete释放内存
 不能通过delete操作符释放已释放过的内存。
 >delete pi;<br>
@@ -116,7 +131,8 @@ delete数组：
 ## 5.1 概念
 引用就是给变量起别名，引用可以做函数的参数和返回值。
 >int a = 66;<br>
->int &b = a;
+>int &b = a;<br>
+>cout << b << endl;
 
 ## 5.2 与指针的比较
 1. 引用必须初始化，指针可以不初始化。
@@ -126,14 +142,122 @@ delete数组：
 5. 可以定义指向指针的指针，不能定义指向引用的指针。
 6. 可以定义指针的引用，不能定义引用的引用。
 
+## 5.3 常引用
+>const int& a = b;<br>
+>int const& a = b;//和上面等价
+
+普通引用叫做左值引用，**常引用是万能引用**。<br>
+普通引用指向右值(rvalue)会报错，如：
+>int& r = 100;//报错
+
+用const不会报错：
+>const int& r = 100;
+
 # 6. 面向对象
 ## 6.1 控制访问属性
+1. 不同的访问属性，影响类中成员访问的位置：
+    - public，任何位置都可以访问。
+    - protected，类内部和子类中可以访问。
+    - private，只有类的内部才可以访问。
+2. 缺省访问属性：
+    - 使用class定义的类，缺省访问属性是private。
+    - 使用struct定义的类，缺省访问属性是public。
+    
+## 6.2 类的多文件编译
+类的声明和实现可以分开：<br>
+**声明文件：**
+>class Student{<br>
+public:<br>
+    &emsp;Student(const string& name, int age);<br>
+    &emsp;void who();<br>
+private:<br>
+    &emsp;string m_name;<br>
+    &emsp;int m_age;<br> 
+};
 
-## 6.2 构造函数
+**实现文件：**
+>void Student::who(){<br>
+    &emsp;cout << m_name << endl;<br>
+}
 
-## 6.3 析构函数
+**在实现文件中，要用类名::的方式限定作用域。**
+
+## 6.3 构造函数
+### 6.3.1 构造函数的重载和缺省构造函数
+1. 一个函数名和类名完全相同，并且没有返回值（连void都没有）的函数叫做构造函数。
+2. 对象创建时，系统自动调用。
+3. 如果一个类中没有构造函数，系统会自动提供一个**缺省的无参构造函数。**
+4. 构造函数可以重载，**即一个类中可以有多个构造函数**，参数不同。
+>class Student{<br>
+public:<br>
+    &emsp;Student(void){}<br>
+    &emsp;Student(const string& name, int age)<br>
+    &emsp;{<br>
+        &emsp;&emsp;m_name = name;<br>
+        &emsp;&emsp;m_age = age;<br>
+    &emsp;}<br>
+private:<br>
+    &emsp;string m_name;<br>
+    &emsp;int m_age;<br>
+};
+
+### 6.3.2 自定义类型转换构造函数
+1. 可以实现从源对象到目标对象的一个隐式转换。
+2. **explicit关键字**可以告诉编译器，不支持隐式转换，必须使用显式转换。
+>Student(const Person& person){}<br>
+
+### 6.3.3 拷贝构造函数
+1. 调用拷贝构造函数的时机：
+    - 用已定义对象作为同类型对象的构造实参。
+    - 以对象的形式向函数传递参数。
+    - 从函数中返回对象（有时候会因编译优化而省略）。
+2. 本质上还是一个构造函数，只是函数的参数是一个本类。
+3. 如果没有显示定义拷贝构造函数，则会有个缺省拷贝函数。
+4. **尽量避免或减少对象的拷贝，传递参数和返回值尽量使用引用。**
+>Student(const Student& that){}<br>
+
+### 6.3.4 初始化列表
+1. **只有构造函数有初始化列表。**
+2. 成员变量的初始化顺序和初始化列表中的顺序无关，而是取决于成员变量的声明顺序。
+3. 初始化列表的必要性：
+    - 如果类中包含常量或者引用的成员变量时。
+    - 在子类中，显示的构造其基类部分。
+>Student(const String& name,int age):m_name(name),m_age(age){}
 
 ## 6.4 this指针
+1. 类的每个成员函数（包括构造函数，析构函数）都有一个隐藏的指针型参数this，指向调用该成员函数的对象。
+2. 从成员函数中返回调用对象自身（返回自引用），支持串联调用。**（重点掌握）**
+>class Counter{<br>
+public:<br>
+    &emsp;Counter(void){}<br>
+    &emsp;Counter& add()<br>
+    &emsp;{<br>
+        &emsp;&emsp;m_count++;<br>
+        &emsp;&emsp;return *this;<br>
+    &emsp;}<br>
+private:<br>
+    &emsp;int m_count;<br>
+};<br><br>
+int main(){<br>
+    &emsp;Counter c;<br>
+    &emsp;c.add().add();<br>
+}
+
+## 6.5 const成员函数和mutable关键字
+1. 在成员函数的形参表之后，函数体之前加上const关键字，即为常函数。
+>void Student::getName()const{}
+2. **常函数中的this指针是常指针，所以不能在常函数中修改成员变量。**
+>void Student::getName()const{}//编译前<br>
+>void Student::getName(const Student* this){}//编译后
+3. **被声明为mutable的成员变量可以在const成员函数中被修改。**
+>mutable int m_age(){}
+4. const成员函数和非const成员函数构成重载。
+
+## 6.6 析构函数
+1. 当一个对象在销毁时会自动调用一个函数，这个函数名和类名相同（前面拥有～），函数没有参数和返回值，这样的函数是析构函数
+>～Student(void){}
+2. **因为没有参数，所以不能构成重载。**
+3. 如果类中没有自定义析构函数，那么系统会自动提供一个缺省构造函数，该析构函数会自动调用成员变量基类的析构函数。
 
 # 7. 异常
 
