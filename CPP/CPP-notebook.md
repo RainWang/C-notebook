@@ -431,8 +431,8 @@ class 类模版名{};
 >template< class A , class B> <br>
 >class CMath<br>
 >{<br>
-    >&emsp;A m_a;<br>
-    >&emsp;B fun();<br>
+    &emsp;A m_a;<br>
+    &emsp;B fun();<br>
 >}
 
 ### 9.2.2 类模版的使用 
@@ -448,16 +448,16 @@ class 类模版名{};
 >template< class T> <br>
 >class CMath<br>
 >{<br>
-    >&emsp;T add(){};<br>
-    >&emsp;T m_a;<br>
+    &emsp;T add(){};<br>
+    &emsp;T m_a;<br>
 >}
 
 >//全类特化<br>
 >template<> <br>
 >class CMath< char* const > <br>
 >{<br>
-    >&emsp;char* const add(){};<br>
-    >&emsp;char* const m_a;<br>
+    &emsp;char* const add(){};<br>
+    &emsp;char* const m_a;<br>
 >}
 
 #### 9.2.4.2 成员特化
@@ -465,7 +465,7 @@ class 类模版名{};
 >template<> <br>
 >class CMath< char* const > ::add()<br>
 >{<br>
-    >&emsp;return strcat(m_t1,m_t2);<br>
+    &emsp;return strcat(m_t1,m_t2);<br>
 >}
 
 #### 9.2.4.3 局部特化
@@ -474,16 +474,16 @@ class 类模版名{};
 >template< class T, class B > <br>
 >class CMath<br>
 >{<br>
-    >&emsp;T add(){};<br>
-    >&emsp;T m_a;<br>
+    &emsp;T add(){};<br>
+    &emsp;T m_a;<br>
 >}
 
 >//局部特化<br>
 >template< class T > <br>
 >class CMath< T, short > <br>
 >{<br>
-    >&emsp;char* const add(){};<br>
-    >&emsp;char* const m_a;<br>
+    &emsp;char* const add(){};<br>
+    &emsp;char* const m_a;<br>
 >}
 
 特化版本过多，容易引起编译错误。
@@ -493,6 +493,6 @@ class 类模版名{};
 >template< class T, class B=int > <br>
 >class CMath<br>
 >{<br>
-    >&emsp;T add(){};<br>
-    >&emsp;T m_a;<br>
+    &emsp;T add(){};<br>
+    &emsp;T m_a;<br>
 >}
