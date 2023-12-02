@@ -409,7 +409,7 @@ template< class 类型参数1, class 类型参数2, ... >
 >template< class T > <br>
 >T Max(T x, T y)<br>
 >{<br>
-    >&emsp;return x>y?x:y;<br>
+    &emsp;return x>y?x:y;<br>
 >}<br>
 
 ### 9.1.2 函数模版的使用 
